@@ -41,9 +41,10 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
+        authorizationServerConfigurer.oidc(Customizer.withDefaults());
+
         http
-                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher()) // Solo intercepta las rutas del
-                                                                                      // auth server
+        .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())                                                      
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/.well-known/**", "/oauth2/token", "/oauth2/jwks").permitAll()
                         .anyRequest().authenticated())
@@ -52,7 +53,7 @@ public class AuthorizationServerConfig {
                 });
 
         return http
-                .formLogin(Customizer.withDefaults()) // login con formulario por defecto
+                .formLogin(Customizer.withDefaults()) 
                 .build();
     }
 
